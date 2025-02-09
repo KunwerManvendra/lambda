@@ -1,0 +1,30 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Resources:
+  MyLambdaFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: MyLambdaFunction
+      Runtime: python3.9
+      Handler: index.lambda_handler
+      Role: arn:aws:iam::730335505228:role/test-github-action-deployment
+      Code:
+        ZipFile: |
+          import json
+
+          def lambda_handler(event, context):
+              numbers = event.get("numbers", [])
+              
+              if not isinstance(numbers, list) or not all(isinstance(num, int) for num in numbers):
+                  return {
+                      "statusCode": 400,
+                      "body": json.dumps({"error": "Invalid input. Provide a list of integers."})
+                  }
+              
+              even_sum = sum(num for num in numbers if num % 2 == 0)
+
+              return {
+                  "statusCode": 200,
+                  "body": json.dumps({"even_sum": even_sum})
+              }
+      Timeout: 10
+      MemorySize: 128
