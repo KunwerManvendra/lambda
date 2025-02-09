@@ -3,7 +3,7 @@ Resources:
   MyLambdaFunction:
     Type: AWS::Lambda::Function
     Properties:
-      FunctionName: MyLambdaFunction
+      FunctionName: MyLambdaFunction1
       Runtime: python3.9
       Handler: index.lambda_handler
       Role: arn:aws:iam::730335505228:role/test-github-action-deployment
